@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+    <head>
+        <title>CHoice</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <style>
+            body {
+                background: #faced5;
+            }
+            .choice {
+                border-radius: 5px;
+                cursor: pointer;
+                background: #fff;
+            }
+            .absolute-center {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .drop_zone {
+                width: 40vw;
+                height: 50vh;
+                margin: 0 auto;
+                margin-top: 20vh;
+                border: 5px dashed #fff;
+                cursor: pointer;
+            }
+            .drop_zon div {
+                width: 100%;
+            }
+            .drop_zone_label {
+                color: #fff;
+                text-shadow: 1px 1px 1px rgba(0,0,0,.2);
+                width: 100%;
+            }
+            .drop_zone_active {
+                background: rgba(255,255,255,.2);
+            }
+            .card-title-input {
+                background: rgba(0, 0, 0, 0.1);
+                position: absolute;
+                bottom: 0px;
+                left: 0px;
+                caret-color: #fff;
+                color: #fff;
+                font-size: 25px !important;
+                text-indent: 20px;
+            }
+            .card-title-input:focus {
+                border: none !important;
+            }
+            .card-content-input {
+                color: #333;
+                font-size: 15px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class='container center-align'>
+
+            <div class='prepare-images'>
+                <div class='row'>
+                    <div class="drop_zone valign-wrapper" id="drop_zone" ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragend="dragend_handler(event);">
+                        <div class="drop_zone_label">
+                            <strong>Drag one or more files to this Drop Zone ...</strong>
+                        </div>
+                    </div>
+                    <input class="hide" type="file" id="fileupload" multiple/>
+                    <div id='file-content'></div>
+                </div>
+            </div>
+
+            <div class='prepare-options'>
+                <div class='row'>
+                    <div class="col s12 m4 option-card">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="https://www.cats.org.uk/uploads/images/featurebox_sidebar_kids/grief-and-loss.jpg">
+                                <span class="card-title editable-field">Card Title</span>
+                                <input type="text" class="card-title-input hide"/>
+                            </div>
+                            <div class="card-content">
+                                <p class="editable-field">I am a very simple card. I am good at containing small bits of information.
+                                I am convenient because I require little markup to use effectively.</p>
+                                <input type="text" class="card-content-input hide"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class='game hide'>
+                <h1>Which one?</h1>
+
+                <div class='row'>
+
+                    <div class='col s6'>
+                        <div class='choice z-depth-1' id='choice1'>
+                            <h3 class='name'></h2>
+                            <img class='responsive-img' src=''>
+                            <p class='desc'></p>
+                        </div>
+                    </div>
+                    
+                    <div class='col s6'>
+                        <div class='choice z-depth-1' id='choice2'>
+                            <h3 class='name'></h2>
+                            <img class='responsive-img' src=''>
+                            <p class='desc'></p>
+                        </div>
+                    </div>
+
+                    <div class="absolute-center">
+                        <div id="final-answer" class="card hide">
+                            <div class="card-image">
+                                <img class="activator" src="">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title activator grey-text text-darken-4"><span class='name'>Card Title</span><i class="material-icons right">more_vert</i></span>
+                            </div>
+                            <div class="card-reveal">
+                                <span class="card-title activator grey-text text-darken-4"><span class='name'>Card Title</span><i class="material-icons right">close</i></span>
+                                <p class="desc"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div><!--game-->
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+        <script src='./choice.js'></script>
+    </body>
+</html>
