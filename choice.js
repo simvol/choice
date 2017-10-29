@@ -1,7 +1,5 @@
 let arr = []; //array of options we are working with right now
 let newArr = [];  //array of options chosen by user
-let choice1 = {option:{ name:'', img: '', desc: ''}};
-let choice2 = {option:{ name:'', img: '', desc: ''}};
 let fakeOptions = [
     'https://images.pexels.com/photos/416160/pexels-photo-416160.jpeg?h=350&dpr=2&auto=compress&cs=tinysrgb',
     'https://images.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg?h=350&dpr=2&auto=compress&cs=tinysrgb',
@@ -13,7 +11,6 @@ let fakeOptions = [
 
 let MIN_LENGTH = 5;
 let ENTER_KEY_NUM = 13;
-
 
 
 prepare();
@@ -116,7 +113,6 @@ function cloneOptions() {
 
     $('.prepare-options').removeClass('hide');
 
-    debugger
     for (var i = 0; i < newArr.length; i ++) {
         let option = newArr[i];
         let newOption = optionCard.clone();
@@ -196,7 +192,7 @@ function addEventListeners() {
    
     choiceContainer
         .click(function(){
-            chooseOption( $(this).find('.name')[0].innerText );
+            chooseOption( $(this).data("option-number") );
         })
         .mouseenter(function(){
             $(this)
@@ -227,14 +223,16 @@ function start(){
     arr = newArr.splice(0, newArr.length); //move everything from newArr to arr
 
     if (arr.length > 1) {
-        setNextOptions(arr, choice1, choice2);
+        setNextOptions(arr);
     } else {
         let choice = arr[0];
         let answerContainer = $('#final-answer');
 
         answerContainer
             .removeClass('hide')
-            .find('img').attr('src', choice.img)
+            .find('img').attr('src', choice.img);
+        
+        answerContainer
             .find('.name').each(function(){ $(this).text(choice.name)} );
 
         answerContainer
@@ -260,6 +258,7 @@ function setOption(number, data) {
     el.find('.name').text(data.name);
     el.find('img').attr('src', data.img);
     el.find('.desc').text(data.desc);
+    el.data("option-number", data.number);
 }
 
 function getActive(position, arr) {
@@ -270,16 +269,16 @@ function getActive(position, arr) {
     }
 }
 
-function chooseOption(optionName) {
-    let optionIndex = _.findIndex(arr, {name: optionName});
+function chooseOption(optionNumber) {
+    let optionIndex = _.findIndex(arr, {number: optionNumber});
     newArr.push( arr.splice(optionIndex, 1)[0] ); //move chosen option from arr to newArr
     
     //remove opposite as well
     if (optionIndex === 0) {
-        console.log('Deleting ', arr[arr.length-1]);
+        console.log('Deleting last', arr[arr.length-1]);
         arr.pop();
     } else {
-        console.log('Deleting ', arr[0]);
+        console.log('Deleting 0', arr[0]);
         arr.shift();
     }
 
