@@ -2,12 +2,15 @@
 <html>
     <head>
         <title>CHoice</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css" />
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.css" />
         <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
         <style>
             body {
                 background: #faced5;
+                font-size: 20px;
             }
             .choice {
                 border-radius: 5px;
@@ -46,7 +49,7 @@
                 left: 0px;
                 caret-color: #fff;
                 color: #fff;
-                font-size: 25px !important;
+                /* font-size: 25px !important; */
                 text-indent: 20px;
             }
             .card-title-input:focus {
@@ -54,7 +57,7 @@
             }
             .card-content-input {
                 color: #333;
-                font-size: 15px;
+                /* font-size: 15px; */
             }
             .prepare-options {
                 position: relative;
@@ -64,10 +67,13 @@
                 right: 5%;
                 bottom: 10%;
             }
-            .sample-message, .your-files-message, .or-message {
+            .help-button {
+                right: 20%;
+            }
+            .sample-message, .your-files-message, .or-message, .help-message {
                 position: fixed;
                 font-family: 'Indie Flower', cursive;
-                font-size: 2vw;
+                /* font-size: 2vw; */
                 opacity: 0;
                 -webkit-transition: opacity .7s ease-in-out;
                 -moz-transition: opacity .7s ease-in-out;
@@ -83,16 +89,41 @@
             .or-message {
                 top: 40%;
                 right: 15%;
-                font-size: 3vw;
+                /* font-size: 3vw; */
             }
             .sample-message {
                 bottom: 22%;
                 right: 10%;
             }
+            .help-message {
+                width: 400px;
+            }
             .desc {
                 padding-bottom: 10px;
             }
-
+            .options-container {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            .option-card {
+                width: 30%;
+                margin: 10px;
+            }
+            .mobile-upload-button {
+                top: 35vh;
+                display: none;
+            }
+            @media screen and (max-width: 500px) {
+                .your-files-message, .or-message, .sample-message {
+                    opacity: 1;
+                }
+                .drop_zone {
+                    display: none;
+                }
+                .mobile-upload-button {
+                    display: inline-block;
+                }
+            }
         </style>
     </head>
     <body>
@@ -101,28 +132,43 @@
             <div class='prepare-images'>
 
                 <div class='row'>
-                    <div class="drop_zone valign-wrapper message-shower" id="drop_zone" ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragend="dragend_handler(event);">
+                    <div class="drop_zone valign-wrapper message-shower upload-button" id="drop_zone" ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragend="dragend_handler(event);">
                         <div class="drop_zone_label">
                             <strong>Drop at least 5 files...</strong>
                         </div>
                     </div>
+
+                    <a class="btn-floating btn-large teal mobile-upload-button upload-button message-shower">
+                        <i class="material-icons">filter</i>
+                    </a>
+
                     <input class="hide" type="file" id="fileupload" multiple/>
                     <div id='file-content'></div>
                 </div>
+
 
                 <span class='your-files-message'> Choose your options</span>
                 <span class='or-message'>or</span>
                 <span class='sample-message'> Help us to decide...</span>
 
-                <a class="btn-floating btn-large teal fixed-button message-shower" id='sample-button'>
-                    <i class="material-icons">snooze</i>
-                </a>
+                <span class='help-message'> Can't decide what to choose? Upload images, write options and play the game!</span>
+
+                <div class="fixed-button">
+
+                    <a class="btn-floating btn-large teal help-message-show">
+                        <i class="material-icons">help</i>
+                    </a>
+                    &nbsp;
+                    <a class="btn-floating btn-large teal message-shower" id='sample-button'>
+                        <i class="material-icons">snooze</i>
+                    </a>
+                </div>
 
             </div>
 
             <div class='prepare-options hide'>
-                <div class='row' id='prepare-options-container'>
-                    <div class="col s12 m4 option-card">
+                <div class='options-container' id='prepare-options-container'>
+                    <div class='option-card'>
                         <div class="card">
                             <div class="card-image">
                                 <img src="">

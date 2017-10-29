@@ -17,6 +17,7 @@ prepare();
 function prepare() {
     addDropZoneEventListeners();
     addSampleButtonListener();
+    addHelperButtonListener();
 }
 
 function init() {
@@ -32,6 +33,7 @@ function prepareChoicesScreen() {
 
 function addDropZoneEventListeners() {
     let dropZone = $('#drop_zone');
+    let uploadButton = $('.upload-button');
     let inputElement = $('#fileupload');
 
     // hover highlight
@@ -74,6 +76,19 @@ function addSampleButtonListener() {
             $('.your-files-message').css('opacity', 0);
             $('.sample-message').css('opacity', 0);
             $('.or-message').css('opacity', 0);
+        });
+
+}
+
+function addHelperButtonListener() {
+    let helperButton = $('.help-message-show');
+
+    helperButton
+        .mouseenter(function(){
+            $('.help-message').css('opacity', 1);
+        })
+        .mouseleave(function(){
+            $('.help-message').css('opacity', 0);
         });
 
 }
