@@ -4,6 +4,7 @@
         <title>CHoice</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css" />
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
         <style>
             body {
                 background: #faced5;
@@ -55,40 +56,92 @@
                 color: #333;
                 font-size: 15px;
             }
+            .prepare-options {
+                position: relative;
+            }
+            .fixed-button {
+                position: fixed;
+                right: 5%;
+                bottom: 10%;
+            }
+            .sample-message, .your-files-message, .or-message {
+                position: fixed;
+                font-family: 'Indie Flower', cursive;
+                font-size: 2vw;
+                opacity: 0;
+                -webkit-transition: opacity .7s ease-in-out;
+                -moz-transition: opacity .7s ease-in-out;
+                -ms-transition: opacity .7s ease-in-out;
+                -o-transition: opacity .7 ease-in-out;
+                transition: opacity .7s ease-in-out;
+
+            }
+            .your-files-message {
+                top: 10%;
+                right: 20%;
+            }
+            .or-message {
+                top: 40%;
+                right: 15%;
+                font-size: 3vw;
+            }
+            .sample-message {
+                bottom: 22%;
+                right: 10%;
+            }
+            .desc {
+                padding-bottom: 10px;
+            }
+
         </style>
     </head>
     <body>
         <div class='container center-align'>
-
+            
             <div class='prepare-images'>
+
                 <div class='row'>
-                    <div class="drop_zone valign-wrapper" id="drop_zone" ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragend="dragend_handler(event);">
+                    <div class="drop_zone valign-wrapper message-shower" id="drop_zone" ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragend="dragend_handler(event);">
                         <div class="drop_zone_label">
-                            <strong>Drag one or more files to this Drop Zone ...</strong>
+                            <strong>Drop at least 5 files...</strong>
                         </div>
                     </div>
                     <input class="hide" type="file" id="fileupload" multiple/>
                     <div id='file-content'></div>
                 </div>
+
+                <span class='your-files-message'> Choose your options</span>
+                <span class='or-message'>or</span>
+                <span class='sample-message'> Help us to decide...</span>
+
+                <a class="btn-floating btn-large teal fixed-button message-shower" id='sample-button'>
+                    <i class="material-icons">snooze</i>
+                </a>
+
             </div>
 
-            <div class='prepare-options'>
-                <div class='row'>
+            <div class='prepare-options hide'>
+                <div class='row' id='prepare-options-container'>
                     <div class="col s12 m4 option-card">
                         <div class="card">
                             <div class="card-image">
                                 <img src="https://www.cats.org.uk/uploads/images/featurebox_sidebar_kids/grief-and-loss.jpg">
                                 <span class="card-title editable-field">Card Title</span>
-                                <input type="text" class="card-title-input hide"/>
+                                <input data-option-number='0' type="text" class="card-title-input hide"/>
                             </div>
                             <div class="card-content">
-                                <p class="editable-field">I am a very simple card. I am good at containing small bits of information.
+                                <p class="desc editable-field">I am a very simple card. I am good at containing small bits of information.
                                 I am convenient because I require little markup to use effectively.</p>
-                                <input type="text" class="card-content-input hide"/>
+                                <input data-option-number='0' type="text" class="card-content-input hide"/>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <a class="btn-floating btn-large red fixed-button" id='done-button'>
+                    <i class="material-icons">done</i>
+                </a>
+                
             </div>
 
             <div class='game hide'>

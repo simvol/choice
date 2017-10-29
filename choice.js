@@ -1,38 +1,36 @@
-//TODO
-// 1. input form for many optiosn with names descriptions and files
-// - i'd say let them upload all pictures first, then ask for name and desc for each
-
-// 2. styles
-
-
-
 let arr = []; //array of options we are working with right now
 let newArr = [];  //array of options chosen by user
 let choice1 = {option:{ name:'', img: '', desc: ''}};
 let choice2 = {option:{ name:'', img: '', desc: ''}};
+let fakeOptions = [
+    'https://images.pexels.com/photos/416160/pexels-photo-416160.jpeg?h=350&dpr=2&auto=compress&cs=tinysrgb',
+    'https://images.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg?h=350&dpr=2&auto=compress&cs=tinysrgb',
+    'https://images.pexels.com/photos/126407/pexels-photo-126407.jpeg?h=350&dpr=2&auto=compress&cs=tinysrgb',
+    'https://images.pexels.com/photos/58997/pexels-photo-58997.jpeg?h=350&dpr=2&auto=compress&cs=tinysrgb',
+    'https://images.pexels.com/photos/8700/wall-animal-dog-pet.jpg?h=350&dpr=2&auto=compress&cs=tinysrgb',
+    'https://images.pexels.com/photos/551628/pexels-photo-551628.jpeg?h=350&dpr=2&auto=compress&cs=tinysrgb'
+]
 
 let MIN_LENGTH = 5;
 let ENTER_KEY_NUM = 13;
 
-//hardcoded, like it was chosen by user
-// for (var i = 0; i < 10; i++) {
-//     newArr.push({
-//         name: 'option #' + i,
-//         img: 'https://www.cats.org.uk/uploads/images/featurebox_sidebar_kids/grief-and-loss.jpg',
-//         desc: 'test'
-//     });
-// }
-//.hardcoded
+
 
 prepare();
+function prepare() {
+    addDropZoneEventListeners();
+    addSampleButtonListener();
+}
 
 function init() {
+    prepareChoicesScreen();
     addEventListeners();
     start();
 }
 
-function prepare() {
-    addDropZoneEventListeners();
+function prepareChoicesScreen() {
+    $('.prepare-options').addClass('hide');
+    $('.game').removeClass('hide');
 }
 
 function addDropZoneEventListeners() {
@@ -60,15 +58,87 @@ function addDropZoneEventListeners() {
     });
 }
 
-displayOptionsToModify();
+function addSampleButtonListener() {
+    let samplButton = $('#sample-button');
+    let hoverToShowMessage = $('.message-shower');
+
+    samplButton
+        .click(function(){
+            loadKittens(); 
+        });
+    
+    hoverToShowMessage
+        .mouseenter(function(){
+            $('.your-files-message').css('opacity', 1);
+            $('.sample-message').css('opacity', 1);
+            $('.or-message').css('opacity', 1);
+        })
+        .mouseleave(function(){
+            $('.your-files-message').css('opacity', 0);
+            $('.sample-message').css('opacity', 0);
+            $('.or-message').css('opacity', 0);
+        });
+
+}
+
+// Load hardcoded data with pet images
+function loadKittens() {
+    for (var i = 0; i < fakeOptions.length; i++) {
+        //extract img name from url
+        let urlParts = fakeOptions[i].split('/');
+        let nameParts = urlParts[urlParts.length-1].split('-');
+        let name = nameParts.splice(0, nameParts.length-1).join(' ');
+
+        newArr.push({
+            name: i + ' ' + name,
+            img: fakeOptions[i],
+            desc: 'Description for option number ' + i,
+            number: i
+        });
+    }
+    displayOptionsToModify();
+}
+
+// displayOptionsToModify();
 function displayOptionsToModify() {
+    prepareOptionsScreen();
+    cloneOptions();
     addOptionsEventListeners();
 }
 
+function prepareOptionsScreen() {
+    $('.prepare-images').addClass('hide');
+}
+
+function cloneOptions() {
+    let optionCard = $('.option-card:first');
+    let prepareOptionsContainer = $('#prepare-options-container');
+
+    $('.prepare-options').removeClass('hide');
+
+    debugger
+    for (var i = 0; i < newArr.length; i ++) {
+        let option = newArr[i];
+        let newOption = optionCard.clone();
+        
+        newOption.find('img').attr('src', option.img);
+        newOption.find('.card-title').text(option.name);
+        newOption.find('input').attr('data-option-number', i);
+        newOption.find('.desc').text(option.desc);
+        
+        prepareOptionsContainer.append(newOption);
+    }
+
+    optionCard.remove();
+}
+
+//Once user uploaded images we want them to write down
+//titles and descriptions for their options
 function addOptionsEventListeners() {
     let optionCard = $('.option-card');
     let editableField = optionCard.find('.editable-field');
     let optionInput = optionCard.find('input');
+    let doneButton = $('#done-button');
 
     editableField
         .click(function(){
@@ -78,20 +148,41 @@ function addOptionsEventListeners() {
    
     optionInput
         .focusout(function(){
-            hideInputShowContent(this);
+            editingDone(this);
         })
         .keyup(function(){
             if(event.keyCode == ENTER_KEY_NUM){
-                hideInputShowContent(this);
+                editingDone(this);
             }
         });
-    
 
-    function hideInputShowContent(input) {
-        $(input).addClass('hide');
-        $(input).prev().removeClass('hide');
+    doneButton
+        .click(function(){
+            init();
+        });
+
+    function editingDone(input) {
+        let inp = $(input);
+        let optionNumber = inp.data("option-number");
+
+        inp.addClass('hide');
+        inp.prev().text(input.value);
+        inp.prev().removeClass('hide');
+
+        let cardTitle = inp.parent().find('.card-title').text();
+        let cardDesc = inp.parent().find('.desc').text();
+        
+        updateData(optionNumber, cardTitle, cardDesc);
     }
     
+    function updateData(optNum, name, desc) {
+        newArr.forEach(function(option){
+            if (option.number === optNum) {
+                option.name = name || option.name;
+                option.desc = desc || option.desc;
+            }
+        });
+    }
 }
 
 function showUploadedImages() {
@@ -205,16 +296,29 @@ function chooseOption(optionName) {
     }
 }
 
-// function inputHandler(input) {
-//     file = input.files[0];
-//     fr = new FileReader();
-//     fr.onload = receivedText;
-//     //fr.readAsText(file);
-//     fr.readAsDataURL(file);
-    
-//     //wtf is this
-//     fr.result
-// }
+function addOption(image, number) {
+        newArr.push({
+            img: image,
+            desc: 'Option description',
+            name: 'Option name',
+            number: newArr.length
+        });
+
+}
+
+function readFile(file, totalFiles) {
+    let fr = new FileReader(); // FileReader instance
+    fr.onload = function () {
+        // Do stuff on onload, use fr.result for contents of file
+
+        addOption(fr.result);
+
+        if (newArr.length === totalFiles) {
+            displayOptionsToModify();
+        }
+    };
+    fr.readAsDataURL( file );
+}
 
 //External stuff
 //https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
@@ -232,20 +336,13 @@ function inputHandler(input) {
     if ( ! window.FileReader ) {
         return alert( 'FileReader API is not supported by your browser.' );
     }
-    if ( input.files && input.files.length > MIN_LENGTH ) {
-        for (let i = 0; i < input.files.length; i++) {
-            let file = input.files[i]; // The file
-            let fr = new FileReader(); // FileReader instance
-            fr.onload = function () {
-                // Do stuff on onload, use fr.result for contents of file
-                newArr.push({img: fr.result});
 
-                if (newArr.length === input.files.length) {
-                    showUploadedImages();
-                }
-            };
-            //fr.readAsText( file );
-            fr.readAsDataURL( file );
+    let totalFiles = input.files.length;
+
+    if ( input.files && totalFiles > MIN_LENGTH ) {
+        for (let i = 0; i < totalFiles; i++) {
+            let file = input.files[i]; // The file
+            readFile(file, totalFiles);
         }
     } else {
         // Handle errors here
@@ -259,12 +356,14 @@ function drop_handler(ev) {
     ev.preventDefault();
     // If dropped items aren't files, reject them
     var dt = ev.dataTransfer;
-    if (dt.items && dt.items.length > MIN_LENGTH) {
+    var totalFiles = dt.items.length;
+
+    if (dt.items && totalFiles > MIN_LENGTH) {
       // Use DataTransferItemList interface to access the file(s)
-      for (var i=0; i < dt.items.length; i++) {
+      for (var i=0; i < totalFiles; i++) {
         if (dt.items[i].kind == "file") {
-          var f = dt.items[i].getAsFile();
-          console.log("... file[" + i + "].name = " + f.name);
+            var f = dt.items[i].getAsFile();
+            readFile(f, totalFiles);
         }
       }
     } else {
