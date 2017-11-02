@@ -42,6 +42,9 @@
             .drop_zone_active {
                 background: rgba(255,255,255,.2);
             }
+            .card-title {
+                text-shadow: 1px 1px 1px rgba(0,0,0,.3);
+            }
             .card-title-input {
                 background: rgba(0, 0, 0, 0.1);
                 position: absolute;
@@ -97,6 +100,10 @@
             }
             .help-message {
                 width: 400px;
+                right: 20%;
+            }
+            .help-message-show {
+                cursor: default;
             }
             .desc {
                 padding-bottom: 10px;
@@ -216,6 +223,7 @@
                                 <img class="activator" src="">
                             </div>
                             <div class="card-content">
+                                <span>Your choice is: </span>
                                 <span class="card-title activator grey-text text-darken-4"><span class='name'></span><i class="material-icons right">more_vert</i></span>
                             </div>
                             <div class="card-reveal">
@@ -223,7 +231,11 @@
                                 <p class="desc"></p>
                             </div>
                         </div>
-                    </div>
+                   </div>
+                   
+                    <a class="btn-floating btn-large blue fixed-button hide" id='again-button'>
+                        <i class="material-icons">replay</i>
+                    </a> 
 
                 </div>
             </div><!--game-->

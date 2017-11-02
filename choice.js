@@ -11,6 +11,7 @@ let fakeOptions = [
 
 let MIN_LENGTH = 5;
 let ENTER_KEY_NUM = 13;
+let SHOW_REPEAT_BUTTON_IN = 1000;
 
 
 prepare();
@@ -174,6 +175,9 @@ function addOptionsEventListeners() {
 
     function editingDone(input) {
         let inp = $(input);
+
+        if (!input.value || input.value.length === 0) { return; }
+
         let optionNumber = inp.data("option-number");
 
         inp.addClass('hide');
@@ -242,6 +246,7 @@ function start(){
     } else {
         let choice = arr[0];
         let answerContainer = $('#final-answer');
+        let repeatButton = $('#again-button');
 
         answerContainer
             .removeClass('hide')
@@ -252,6 +257,14 @@ function start(){
 
         answerContainer
             .find('.desc:first').text(choice.desc);
+
+        let timeout = setTimeout(function(){
+            repeatButton.removeClass('hide');
+        }, SHOW_REPEAT_BUTTON_IN)
+
+        repeatButton.click(function(){
+            location.reload();
+        });
     }
 }
 
